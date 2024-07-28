@@ -1,0 +1,61 @@
+1. What tech stack will you use for your final project?
+
+Node.js, Express, React, Postgresql, SQL
+
+2. Is the front-end UI or the back-end going to be the focus of your project? Or are
+you going to make an evenly focused full-stack application?
+
+A full-stack focused app that is slightly more focused on the front end
+
+3. Will this be a website? A mobile app? Something else?
+
+Website
+
+4. What goal will your project be designed to achieve?
+
+Create a meal planning application that will allow users to search for and input various meals for 
+breakfast, lunch, and dinner on a per week basis. It could help users by saving money, losing weight, 
+or trying food they wouldn't think of trying beforehand.
+
+5. What kind of users will visit your app? In other words, what is the demographic of
+your users?
+
+Any users who are wanting to track their food intake or plan out meals for the upcoming days.
+
+6. What data do you plan on using? How are you planning on collecting your data?
+Using an API to fetch data about meals, based on users input into form. Then save the data in a database based on 
+where in the meal planner they decide to put that meal.
+
+
+What does your database schema look like?
+Tables for:
+    users
+        id
+        username
+        password
+        first name
+        last name
+
+    users meals
+        user_id
+        date
+        breakfast
+        lunch
+        dinner
+
+Is there any sensitive information you need to secure?
+
+User info / Passwords
+
+What functionality will your app include?
+
+logging in, searching for meals, saving the meals to a database
+
+What will the user flow look like?
+
+signing up / logging in then adding meals to your meal planner, checking your 
+planner for the upcoming days, or viewing the planner to see what ingredients you need for specific meals
+
+What features make your site more than a CRUD app? What are your stretch
+goals?
+Add in daily totals for nutrients, suggestions to increase any lacking nutrients
