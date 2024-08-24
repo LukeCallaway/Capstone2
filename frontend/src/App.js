@@ -88,9 +88,14 @@ function App() {
     return res;
   }
 
-  const addTotalNutrients = (day, nutrient) => {
-    return
+  const addTotalNutrients = (day) => {
+    let nutrients = {};
+    const res = meals.filter(m => m.day = day);
+    // go over each nutrient in the arr and add to the total of each nutrient or add to the obj
+    res.forEach(el => el.nutrient);
+    return nutrients;
   }
+
   return (
     <>
     <UserContext.Provider value={currUser}>
