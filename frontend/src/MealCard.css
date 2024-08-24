@@ -1,0 +1,9 @@
+.meal-card-title{
+    font-size: 18px;
+
+}
+
+.meal-card{
+    display: inline-block;
+    width: 33%;
+}
