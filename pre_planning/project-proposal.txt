@@ -58,4 +58,5 @@ planner for the upcoming days, or viewing the planner to see what ingredients yo
 
 What features make your site more than a CRUD app? What are your stretch
 goals?
-Add in daily totals for nutrients, suggestions to increase any lacking nutrients
+Add in daily totals for nutrients, suggestions to increase any lacking nutrients 
+Something a bit more.
