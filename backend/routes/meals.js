@@ -47,7 +47,6 @@ router.get("/:username/:id", ensureCorrectUser, async function (req, res, next) 
 
 router.post("/:username", ensureCorrectUser, async function (req, res, next) {
     try {
-  
       const meal = await Meals.addMeal(req.body);
       return res.status(201).json({ meal });
     } catch (err) {

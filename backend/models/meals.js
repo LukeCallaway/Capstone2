@@ -1,7 +1,7 @@
 "use strict";
 
 const db = require("../db");
-
+const {sqlForPartialUpdate} = require('../helpers/sql')
 const {
   NotFoundError,
   BadRequestError,
@@ -13,6 +13,7 @@ class Meals {
     static async getAll() {
         const result = await db.query(
             `SELECT 
+                id,
                 name,
                 calories,
                 protein,
@@ -48,7 +49,7 @@ class Meals {
         return meal;
     }
 
-    static async addMeal(userId, name, calories, protein, carbs, fats, day, time){
+    static async addMeal({ userId, name, calories, protein, carbs, fats, day, time }){
         const result = await db.query(
             `INSERT INTO meals
             (user_id,
@@ -59,12 +60,12 @@ class Meals {
             fats,
             day,
             time)
-            VALUES ($!,$2,$3,$4,$5,$6,$7,$8)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
             RETURNING user_id, name, calories, protein, carbs, fats, day, time`,
             [userId, name, calories, protein, carbs, fats, day, time]
         )
 
-        const meal = result[0];
+        const meal = result.rows[0];
         return meal;
     }
 
@@ -79,6 +80,7 @@ class Meals {
                           SET ${setCols} 
                           WHERE id = ${mealID} 
                           RETURNING 
+                            id,
                             user_id,
                             name,
                             calories,
@@ -92,7 +94,7 @@ class Meals {
     
         if (!meal) throw new NotFoundError(`No meal by id: ${id}`);
     
-        return user;
+        return meal;
       }
     
 
