@@ -4,14 +4,14 @@ CREATE TABLE users (
     password TEXT NOT NULL,
     email TEXT NOT NULL
         CHECK (position('@' IN email) > 1),
-    calories INTEGER DEFAULT 2300 
+    calories INTEGER  
         CHECK (calories >= 1200 AND calories <= 4000 ),
     --  protein, carbs, fats are in grams
-    protein INTEGER DEFAULT 200
+    protein INTEGER 
         CHECK (protein >= 15 AND protein <= 400 ),
-    carbs INTEGER DEFAULT 450
+    carbs INTEGER 
         CHECK (carbs >= 120 AND carbs <= 700 ),
-    fats INTEGER DEFAULT 90
+    fats INTEGER 
         CHECK (fats >= 20 AND fats <= 180 )
 );
 
