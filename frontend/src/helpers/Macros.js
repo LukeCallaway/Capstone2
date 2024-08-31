@@ -1,24 +1,20 @@
 class Macros {
-    constructor(calories, protein, carbs, fats) {
-        this.calories = calories;
-        this.protein = protein;
-        this.carbs = carbs;
-        this.fats = fats;
+
+    static isEnoughCalories(calories, userCalories){
+        return calories >= userCalories
     }
 
-    isEnoughhCalories(calories){
-        return this.calories >= calories
+    static isEnoughProtein(protein, userProtein){
+        return protein >= userProtein
     }
 
-    isEnoughhProtein(protein){
-        return this.protein >= protein
-    }
-
-    isEnoughhCarbs(carbs){
-        return this.carbs >= carbs
+    static isEnoughCarbs(carbs, userCarbs){
+        return carbs >= userCarbs
     }
     
-    isEnoughhFats(fats){
-        return this.fats >= fats
+    static isEnoughFats(fats, userFats){
+        return fats >= userFats
     }
 }
+
+export default Macros;

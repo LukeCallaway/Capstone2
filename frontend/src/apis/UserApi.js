@@ -12,8 +12,8 @@ class UserApi {
     return token;
   }
 
-  static async request(endpoint, data = {}, method = "get") {
-    console.debug("API Call:", endpoint, data, method);
+  static async request(endpoint, method = "get",  data = {}) {
+    console.debug("API Call:", endpoint, method, data);
 
     const url = `${BASE_URL}/${endpoint}`;
     const headers = { Authorization: `Bearer ${UserApi.token}` };
@@ -28,26 +28,35 @@ class UserApi {
       let message = err.response.data.error.message;
       throw Array.isArray(message) ? message : [message];
     }
+    // return (await axios({ url, method, data, params, headers })).data;
   }
 
   // Individual API routes
 
   static async register(data) {
-    let res = await this.request('auth/register', data, 'post');
+    const res = await this.request('auth/register', 'post', data);
     return res;
   }
 
   static async login(data) {
-    let res = await this.request('auth/token', data, 'post');
+    const res = await this.request('auth/token', 'post', data);
     return res;
   }
 
   static async getUserInfo(username) {
-    let res = await this.request(`users/${username}`);
+    const res = await this.request(`users/${username}`);
     return res;
   }
 
+  static async addUserMeal(username, data){
+    const res = await this.request(`meals/${username}`, 'post', data)
+    return res;
+  }
 
+  static async deleteUserMeal(username, id){
+    const res = await this.request(`meals/${username}/${id}`, 'delete');
+    return res;
+  }
 //   static async updateUserInfo(username, data) {
 //     let res = await this.request(`users/${username}`, data, 'patch');
 //     return res;

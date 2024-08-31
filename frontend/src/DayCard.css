@@ -6,3 +6,16 @@
 .day-card-title{
     margin-left: -10px;
 }
+
+.day-total-nutrients{
+    display: inline;
+}
+
+/* if a users total nutrients is >= their goals  */
+.enough{
+    color: green;
+}
+/* if a users total nutrients is < their goals  */
+.not-enough{
+    color: red;
+}

@@ -2,42 +2,51 @@ import React, {useState, useEffect, useContext} from 'react';
 import UserContext from "./UserContext";
 import { Navigate } from "react-router-dom";
 import SearchResultCard from './SearchResultCard';
+import { useFormik } from 'formik';
 
 function Search({fetchDataWithName, fetchDataByNutrients, search}) {
-  const currUser = useContext(UserContext)
-  const INITIAL_STATE = {
-    mealName: '',
-    minCarbs: '',
-    maxCarbs: '',
-    minProtein: '',
-    maxProtein: '',
-    minFat: '',
-    maxFat: ''
-  };
-  
-  const [formData, setFormData] = useState(INITIAL_STATE);
+  const currUser = useContext(UserContext);
 
-  if(!currUser.username) return <Navigate to='/login' />
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(formData => ({
-      ...formData,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if(formData.mealName === '') fetchDataByNutrients(formData, 'mealName')
-    else fetchDataWithName(formData.mealName, formData, 'mealName');
-    setFormData(INITIAL_STATE);
+  const validate = (values) => {
+    const errors = {};
+    // if all fields are empty
+    if(!values.mealName && 
+       !values.minCarbs && 
+       !values.maxCarbs && 
+       !values.minProtein && 
+       !values.maxProtein && 
+       !values.minFat && 
+       !values.maxFat) errors.form = "At least one field required"
+    return errors;
   }
+  const formik = useFormik({
+    initialValues: {
+      mealName: '',
+      minCarbs: '',
+      maxCarbs: '',
+      minProtein: '',
+      maxProtein: '',
+      minFat: '',
+      maxFat: ''
+    },
+    validate,
+    onSubmit: (values) => {
+      if(values.mealName === ''){
+        fetchDataByNutrients({...values}, 'mealName');
+      } else{
+        fetchDataWithName(values.mealName, {...values},  'mealName');     
+      }  
+    }
+  })
+
+  if(currUser.username === undefined) return <Navigate to='/login' />
 
   return (
     <>
  
-      <form onSubmit={handleSubmit} className='form'>
+      <form onSubmit={formik.handleSubmit} className='form'>
+      {formik.errors.form ? <div className='errors'>{formik.errors.form}</div> : null}
+
         <label htmlFor="mealName" className='form-labels'>Search By Meal Name</label>
         <br></br>
         <input
@@ -45,8 +54,8 @@ function Search({fetchDataWithName, fetchDataByNutrients, search}) {
           id="mmealName"
           type="text"
           name="mealName"
-          value={formData.mealName}
-          onChange={handleChange}
+          value={formik.values.mealName}
+          onChange={formik.handleChange}
         />
         <br></br>
         <label htmlFor="minCarbs" className='form-labels'>Min Carbs</label>
@@ -56,8 +65,8 @@ function Search({fetchDataWithName, fetchDataByNutrients, search}) {
           id="minCarbs"
           type="text"
           name="minCarbs"
-          value={formData.minCarbs}
-          onChange={handleChange}
+          value={formik.values.minCarbs}
+          onChange={formik.handleChange}
         />
         <br></br>
         <label htmlFor="maxCarbs" className='form-labels'>Max Carbs</label>
@@ -67,8 +76,8 @@ function Search({fetchDataWithName, fetchDataByNutrients, search}) {
           id="maxCarbs"
           type="text"
           name="maxCarbs"
-          value={formData.maxCarbs}
-          onChange={handleChange}
+          value={formik.values.maxCarbs}
+          onChange={formik.handleChange}
         />
         <br></br>
         <label htmlFor="minProtein" className='form-labels'>Min Protein</label>
@@ -78,8 +87,8 @@ function Search({fetchDataWithName, fetchDataByNutrients, search}) {
           id="minProtein"
           type="text"
           name="minProtein"
-          value={formData.minProtein}
-          onChange={handleChange}
+          value={formik.values.minProtein}
+          onChange={formik.handleChange}
         />
         <br></br>
         <label htmlFor="maxProtein" className='form-labels'>Max Protein</label>
@@ -89,8 +98,8 @@ function Search({fetchDataWithName, fetchDataByNutrients, search}) {
           id="maxProtein"
           type="text"
           name="maxProtein"
-          value={formData.maxProtein}
-          onChange={handleChange}
+          value={formik.values.maxProtein}
+          onChange={formik.handleChange}
         />
         <br></br>
         <label htmlFor="minFat" className='form-labels'>Min Fat</label>
@@ -100,8 +109,8 @@ function Search({fetchDataWithName, fetchDataByNutrients, search}) {
           id="minFat"
           type="text"
           name="minFat"
-          value={formData.minFat}
-          onChange={handleChange}
+          value={formik.values.minFat}
+          onChange={formik.handleChange}
         />
         <br></br>
         <label htmlFor="maxFat" className='form-labels'>Max Fat</label>
@@ -111,19 +120,25 @@ function Search({fetchDataWithName, fetchDataByNutrients, search}) {
           id="maxFat"
           type="text"
           name="maxFat"
-          value={formData.maxFat}
-          onChange={handleChange}
+          value={formik.values.maxFat}
+          onChange={formik.handleChange}
         />
         <br></br>
-        <button className='form-btn'>Search</button>
+        <button type='submit' className='form-btn'>Search</button>
       </form>
       <div>
         {search ?
-         search.map(m =>  <SearchResultCard id={m.id} img={m.image} title={m.title}/>)
+         search.map(m =>  <SearchResultCard 
+          id={m.id} img={m.image} title={m.title} 
+          carbs={m.carbs ? m.carbs : m.nutrition.nutrients[3].amount} 
+          protein={m.protein ? m.protein : m.nutrition.nutrients[10].amount} 
+          fats={m.fat ? m.fat : m.nutrition.nutrients[1].amount} 
+          calories={m.calories ? m.calories : m.nutrition.nutrients[0].amount}/>)
           : 'No Results Found'
         }
       </div>
       </>
-  );       }
+  );       
+}
 
 export default Search;

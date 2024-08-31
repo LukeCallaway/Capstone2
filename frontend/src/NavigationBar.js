@@ -7,7 +7,7 @@ import { redirect } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 
 function NavigationBar({ doLogout }) {
-  const currUser = useContext(UserContext)
+  const currUser = useContext(UserContext) || null
   return (
     <div>
       <Navbar expand="md">
@@ -16,7 +16,7 @@ function NavigationBar({ doLogout }) {
         </NavLink>
         
         <Nav className="ml-auto" navbar>
-          {!currUser.username ? 
+          {currUser.username === undefined ? 
           <>
           <NavItem>
             <NavLink to="/signup">Sign Up</NavLink>
@@ -28,6 +28,9 @@ function NavigationBar({ doLogout }) {
           </>
           :
           <>
+          <NavItem>
+            <NavLink to="/add-meal">Add Meal</NavLink>
+          </NavItem>
           <NavItem>
             <NavLink to="/search">Search</NavLink>
           </NavItem>
