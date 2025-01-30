@@ -21,10 +21,10 @@ function DayCard({ day, getMealsByDayAndTime, addTotalNutrients, deleteUserMeal}
             <MealCard deleteUserMeal={deleteUserMeal} day={day} mealType={'Lunch'} getMealsByDayAndTime={getMealsByDayAndTime}/>
             <MealCard deleteUserMeal={deleteUserMeal} day={day} mealType={'Dinner'} getMealsByDayAndTime={getMealsByDayAndTime}/>
             <div className="day-total-nutrients">
-              <p className={`day-total-nutrients ${Macros.isEnoughCalories(dayTotals.calories, currUser.calories) ? 'enough' : 'not-enough'} `}>Total Calories: {dayTotals.calories}  </p> 
-              <p className={`day-total-nutrients ${Macros.isEnoughProtein(dayTotals.protein, currUser.protein) ? 'enough' : 'not-enough'} `}>Total Protein: {dayTotals.protein} </p>
-              <p className={`day-total-nutrients ${Macros.isEnoughCarbs(dayTotals.carbs, currUser.carbs)? 'enough' : 'not-enough'} `}>Total Carbs: {dayTotals.carbs} </p>
-              <p className={`day-total-nutrients ${Macros.isEnoughFats(dayTotals.fats, currUser.fats) ? 'enough' : 'not-enough'} `}>Total Fats: {dayTotals.fats} </p>
+              <p className={`day-total-nutrients ${Macros.isEnoughCalories(dayTotals.calories, currUser.calories) ? 'enough' : 'not-enough'} `}>Total Calories: {dayTotals.calories}g </p> 
+              <p className={`day-total-nutrients ${Macros.isEnoughProtein(dayTotals.protein, currUser.protein) ? 'enough' : 'not-enough'} `}>Total Protein: {dayTotals.protein}g </p>
+              <p className={`day-total-nutrients ${Macros.isEnoughCarbs(dayTotals.carbs, currUser.carbs)? 'enough' : 'not-enough'} `}>Total Carbs: {dayTotals.carbs}g </p>
+              <p className={`day-total-nutrients ${Macros.isEnoughFats(dayTotals.fats, currUser.fats) ? 'enough' : 'not-enough'} `}>Total Fats: {dayTotals.fats}g </p>
             </div>
           </CardText>
         </CardBody>

@@ -3,8 +3,6 @@ import "./NavigationBar.css";
 import { NavLink } from "react-router-dom";
 import { Navbar, Nav, NavItem } from "reactstrap";
 import UserContext from "./UserContext";
-import { redirect } from "react-router-dom";
-import { Navigate } from "react-router-dom";
 
 function NavigationBar({ doLogout }) {
   const currUser = useContext(UserContext) || null
@@ -16,7 +14,9 @@ function NavigationBar({ doLogout }) {
         </NavLink>
         
         <Nav className="ml-auto" navbar>
-          {currUser.username === undefined ? 
+          {!currUser || currUser.username === undefined ? 
+
+          // no current user
           <>
           <NavItem>
             <NavLink to="/signup">Sign Up</NavLink>
@@ -27,6 +27,8 @@ function NavigationBar({ doLogout }) {
           </NavItem> 
           </>
           :
+
+          // current user
           <>
           <NavItem>
             <NavLink to="/add-meal">Add Meal</NavLink>

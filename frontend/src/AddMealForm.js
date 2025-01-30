@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import UserContext from "./UserContext";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Field, useFormik } from 'formik';
-function AddMealForm({addUserMeal, addMeal}) {
+function AddMealForm({addUserMeal}) {
   const currUser = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -26,12 +26,11 @@ function AddMealForm({addUserMeal, addMeal}) {
     validate,
     onSubmit: (values) => {
       addUserMeal({...values, userId: currUser.id})
-      addMeal({...values})
       navigate('/')
     }
   })
 
-  if(currUser.username === undefined) return <Navigate to='/login' />
+  if(currUser === undefined || currUser.username === undefined) return <Navigate to='/login' />
 
   return (
     <>

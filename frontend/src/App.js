@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
-import React, {useState, useEffect} from 'react';
-import {Navigate, Routes, Route, useNavigate} from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {Routes, Route} from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -22,9 +22,21 @@ import UserContext from './UserContext';
 function App() {
   const [token, setToken] = useLocalStorageState('token', '');
   const [currUser, setCurrUser] = useLocalStorageState('currUser', []);
-  const [meals, setMeals] = useLocalStorageState('meals', []);
-  const [search, setSearch] = useState([]);
-
+  const [meals, setMeals] = useLocalStorageState('meals', currUser.meals);
+  const [search, setSearch] = useLocalStorageState('meal', []);
+  
+  useEffect(() => {
+    const setUserData = async () => {
+      await UserApi.setToken(token);
+      if(token !== ''){
+        const decoded = jwtDecode(token);
+        const user = await getUserInfo(decoded.username);
+        setCurrUser(user);
+        setMeals(user.meals);        
+      }
+    }
+    setUserData();
+  }, [token, setCurrUser, setMeals])
 
   const getUserInfo = async (username) => {
     const userInfo = await UserApi.getUserInfo(username);
@@ -50,6 +62,7 @@ function App() {
   const doSignUp = async (data) => {
     try{
       const res = await UserApi.register({...data});
+      await UserApi.setToken(res.token);
       setCurrUser({username: data.username, 
                    email: data.email,
                    calories: data.calories,
@@ -57,9 +70,10 @@ function App() {
                    carbs: data.carbs,
                    fats: data.fats
                   });
-      setToken(res);
+      setToken(res.token);
+      setMeals([]);
     } catch(e){
-      alert('Username Taken')
+      alert('Username Taken');
     }
   }
 
@@ -68,14 +82,11 @@ function App() {
     setToken('');
   }
 
-  // add meal to local state
-  const addMeal = (data) => {
-    setMeals(meals => [...meals, data])
-  }
-
-  // add meal to database
+  // add meal to database and local state
   const addUserMeal = async (data) => {
-    await UserApi.addUserMeal(currUser.username, data)
+    await UserApi.addUserMeal(currUser.username, data);
+    const getMeals = await UserApi.getUserInfo(currUser.username)
+    setMeals(getMeals.user.meals)
   }
 
   const deleteUserMeal = async (id) => {
@@ -83,16 +94,23 @@ function App() {
     setMeals(meals.filter(m => m.id !== id))
   }
 
+  const deleteAllUserMeals = async () => {
+    await currUser.meals.map(m => UserApi.deleteUserMeal(currUser.username, m.id))
+    setMeals([]);
+  }
+
   const getMealsByDayAndTime = (day, time) => {
     const res = meals.filter(m => m.day === day && m.time === time);
     return res;
   }
 
+  // fetching data from spoonacular api
   const fetchDataWithName = async (query, data, removedKey) => {
     const res = await SpoonacularApi.getMealsBySearch(query, data, removedKey);
     setSearch(res.data.results)
   }
 
+  // fetching data from spoonacular api
   const fetchDataByNutrients = async (data, removedKey) => {
     const res = await SpoonacularApi.getMealsByNutrients(data, removedKey);
     setSearch(res.data);
@@ -110,6 +128,8 @@ function App() {
     return obj;
   }
 
+  // return obj with total nutrients by day 
+  // example Sundays breakfast + lunch + dinner nutrients
   const addTotalNutrients = (day) => {
     let nutrients = {'calories': 0, 'protein': 0, 'carbs': 0, 'fats': 0};
     const res = meals.filter(m => m.day === day);
@@ -124,11 +144,11 @@ function App() {
     <NavigationBar  doLogout={doLogout}/> 
 
     <Routes>
-      <Route path='/' element={<Homepage deleteUserMeal={deleteUserMeal} addTotalNutrients={addTotalNutrients} getMealsByDayAndTime={getMealsByDayAndTime} meals={meals}/>} />
+      <Route path='/' element={<Homepage deleteUserMeal={deleteUserMeal} deleteAllUserMeals={deleteAllUserMeals} addTotalNutrients={addTotalNutrients} getMealsByDayAndTime={getMealsByDayAndTime} meals={meals}/>} />
       <Route path='/login' element={<Login  doLogin={doLogin}/>} />
       <Route path='/signup' element={<Signup doSignUp={doSignUp}/>} />
-      <Route path='/search' element={<Search  fetchDataWithName={fetchDataWithName} fetchDataByNutrients={fetchDataByNutrients} search={search}/>} />
-      <Route path='/add-meal' element={<AddMealForm addUserMeal={addUserMeal} addMeal={addMeal}/>} />
+      <Route path='/search' element={<Search addUserMeal={addUserMeal} fetchDataWithName={fetchDataWithName} fetchDataByNutrients={fetchDataByNutrients} search={search}/>} />
+      <Route path='/add-meal' element={<AddMealForm addUserMeal={addUserMeal}/>} />
 
       <Route path='*' element={<NotFound />} />
     </Routes>

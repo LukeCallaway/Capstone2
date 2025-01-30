@@ -14,11 +14,11 @@ const Signup = ({ doSignUp }) => {
     if(values.calories < 1200) errors.calories = 'Minimum 1200g Calories'
     if(values.calories > 4000) errors.calories = 'Maximum 4000g Calories'
     
-    if(values.carbs < 15) errors.carbs = 'Minimum 15g Carbs'
-    if(values.carbs > 400) errors.carbs = 'Maximum 400g Carbs'
+    if(values.carbs < 120) errors.carbs = 'Minimum 120g Carbs'
+    if(values.carbs > 700) errors.carbs = 'Maximum 700g Carbs'
 
-    if(values.protein < 120) errors.protein = 'Minimum 120g Protein'
-    if(values.protein > 700) errors.protein = 'Maximum 700g Protein'
+    if(values.protein < 15) errors.protein = 'Minimum 15g Protein'
+    if(values.protein > 400) errors.protein = 'Maximum 400g Protein'
 
     if(values.fats < 20) errors.fats = 'Minimum 20g Fats'
     if(values.fats > 180) errors.fats = 'Maximum 180g Fats'
@@ -43,7 +43,7 @@ const Signup = ({ doSignUp }) => {
   })
 
   const currUser = useContext(UserContext)
-  if(currUser.username !== undefined) return <Navigate to='/' />
+  if(!currUser || currUser.username !== undefined) return <Navigate to='/' />
 
   return (
     <>
@@ -63,7 +63,7 @@ const Signup = ({ doSignUp }) => {
         onChange={formik.handleChange}
       />
       <br></br>
-      {formik.errors.username ? <div className='errors'>{formik.errors.username}</div> : null}
+      {formik.values.username !== '' && formik.errors.username ? <div className='errors'>{formik.errors.username}</div> : null}
 
       <label htmlFor="password" className='form-labels'>Password</label>
       <br></br>
@@ -76,7 +76,7 @@ const Signup = ({ doSignUp }) => {
         onChange={formik.handleChange}
       />
       <br></br>
-      {formik.errors.password ? <div className='errors'>{formik.errors.password}</div> : null}
+      {formik.values.password !== '' &&  formik.errors.password ? <div className='errors'>{formik.errors.password}</div> : null}
 
       <label htmlFor="email" className='form-labels'>Email</label>
       <br></br>
@@ -89,7 +89,7 @@ const Signup = ({ doSignUp }) => {
         onChange={formik.handleChange}
       />
       <br></br>
-      {formik.errors.email ? <div className='errors'>{formik.errors.email}</div> : null}
+      {formik.values.email !== '' && formik.errors.email ? <div className='errors'>{formik.errors.email}</div> : null}
 
       <label htmlFor="calories" className='form-labels'>Calorie Target</label>
       <br></br>
@@ -102,7 +102,7 @@ const Signup = ({ doSignUp }) => {
         onChange={formik.handleChange}
       />
       <br></br>
-      {formik.errors.calories ? <div className='errors'>{formik.errors.calories}</div> : null}
+      {formik.values.calories !== '' && formik.errors.calories ? <div className='errors'>{formik.errors.calories}</div> : null}
 
       <label htmlFor="protein" className='form-labels'>Protein Goal</label>
       <br></br>
@@ -115,7 +115,7 @@ const Signup = ({ doSignUp }) => {
         onChange={formik.handleChange}
       />
       <br></br>
-      {formik.errors.protein ? <div className='errors'>{formik.errors.protein}</div> : null}
+      {formik.values.protein !== '' && formik.errors.protein ? <div className='errors'>{formik.errors.protein}</div> : null}
 
       <label htmlFor="carbs" className='form-labels'>Carbs Goal</label>
       <br></br>
@@ -128,7 +128,7 @@ const Signup = ({ doSignUp }) => {
         onChange={formik.handleChange}
       />
       <br></br>
-      {formik.errors.carbs ? <div className='errors'>{formik.errors.carbs}</div> : null}
+      {formik.values.carbs !== '' && formik.errors.carbs ? <div className='errors'>{formik.errors.carbs}</div> : null}
 
       <label htmlFor="fats" className='form-labels'>Fats Goal</label>
       <br></br>
@@ -141,7 +141,7 @@ const Signup = ({ doSignUp }) => {
         onChange={formik.handleChange}
       />
       <br></br>
-      {formik.errors.fats ? <div className='errors'>{formik.errors.fats}</div> : null}
+      {formik.values.fats !== '' && formik.errors.fats ? <div className='errors'>{formik.errors.fats}</div> : null}
 
       <button type='submit' className='form-btn'>Sign Up</button>
     </form>

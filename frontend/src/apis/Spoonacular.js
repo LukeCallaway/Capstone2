@@ -5,7 +5,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL || "";
 
 
 class SpoonacularApi {
-  static apiKey = ''
+  static apiKey = 'f2f982afcbca4a63a21fb3f39183ff70'
   static baseUrl = 'https://api.spoonacular.com/recipes/'
 
   // turn an object into str 
@@ -24,16 +24,14 @@ class SpoonacularApi {
   // used if a dish name IS included in the search
   static async getMealsBySearch(query, data, removedKey){
     const params = SpoonacularApi.objToParams(data, removedKey)
-    const res = await axios.get(`${SpoonacularApi.baseUrl}complexSearch?apiKey=${SpoonacularApi.apiKey}&query=${query}&addRecipeNutrition=true&number=1${params}`);
-    console.log('get by name', res)
+    const res = await axios.get(`${SpoonacularApi.baseUrl}complexSearch?apiKey=${SpoonacularApi.apiKey}&query=${query}&addRecipeNutrition=true&number=10${params}`);
     return res;
   }
 
   // used if a dish name IS NOT included in the search
   static async getMealsByNutrients(data, removedKey){
     const params = SpoonacularApi.objToParams(data, removedKey);
-    const res = await axios.get(`${SpoonacularApi.baseUrl}findByNutrients?apiKey=${SpoonacularApi.apiKey}&number=1${params}`);
-    console.log(res)
+    const res = await axios.get(`${SpoonacularApi.baseUrl}findByNutrients?apiKey=${SpoonacularApi.apiKey}&number=10${params}`);
     return res;
   }
 

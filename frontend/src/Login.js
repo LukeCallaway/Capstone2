@@ -25,7 +25,7 @@ function Login ({ doLogin }) {
   })
 
   const currUser = useContext(UserContext)
-  if(currUser.username !== undefined) return <Navigate to='/' />
+  if(!currUser || currUser.username !== undefined) return <Navigate to='/' />
 
 
   return (
@@ -60,7 +60,7 @@ function Login ({ doLogin }) {
       />
       {formik.errors.password ? <div className='errors'>{formik.errors.password}</div> : null}
       <br></br>
-      <button type='submit' className='form-btn'>Log In</button>
+      <button type='submit' className='form-btn'>Log In!</button>
     </form>
     </>
   )

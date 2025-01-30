@@ -16,10 +16,10 @@ function MealCard({day, mealType, getMealsByDayAndTime, deleteUserMeal}) {
           </CardTitle>
           <CardText >
           <p>Meal Name : {meal ? meal.name : ''}</p>
-          <p>Total Calories : {meal ? meal.calories : 0}</p>
-          <p>Total Protein : {meal ? meal.protein : 0}</p>
-          <p>Total Carbs : {meal ? meal.carbs : 0}</p>
-          <p>Total Fats : {meal ? meal.fats : 0}</p>
+          <p>Total Calories : {meal ? meal.calories : 0}g</p>
+          <p>Total Protein : {meal ? meal.protein : 0}g</p>
+          <p>Total Carbs : {meal ? meal.carbs : 0}g</p>
+          <p>Total Fats : {meal ? meal.fats : 0}g</p>
 
           {meal ?           
           <button onClick={() => deleteUserMeal(meal.id)}>
@@ -27,8 +27,7 @@ function MealCard({day, mealType, getMealsByDayAndTime, deleteUserMeal}) {
           </button> : 
           <button onClick={() => navigate('/add-meal')}>
           Add
-        </button>}
-
+        </button>} 
           </CardText>
         </CardBody>
       </Card>

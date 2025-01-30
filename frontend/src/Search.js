@@ -1,10 +1,11 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useContext} from 'react';
 import UserContext from "./UserContext";
 import { Navigate } from "react-router-dom";
 import SearchResultCard from './SearchResultCard';
 import { useFormik } from 'formik';
+import AddMealFromSearchForm from './AddMealFromSearchForm';
 
-function Search({fetchDataWithName, fetchDataByNutrients, search}) {
+function Search({fetchDataWithName, fetchDataByNutrients, search, addUserMeal}) {
   const currUser = useContext(UserContext);
 
   const validate = (values) => {
@@ -38,8 +39,7 @@ function Search({fetchDataWithName, fetchDataByNutrients, search}) {
       }  
     }
   })
-
-  if(currUser.username === undefined) return <Navigate to='/login' />
+  if(currUser === undefined || currUser.username === undefined) return <Navigate to='/login' />
 
   return (
     <>
@@ -128,12 +128,20 @@ function Search({fetchDataWithName, fetchDataByNutrients, search}) {
       </form>
       <div>
         {search ?
-         search.map(m =>  <SearchResultCard 
+         search.map(m => <> <SearchResultCard 
           id={m.id} img={m.image} title={m.title} 
           carbs={m.carbs ? m.carbs : m.nutrition.nutrients[3].amount} 
           protein={m.protein ? m.protein : m.nutrition.nutrients[10].amount} 
           fats={m.fat ? m.fat : m.nutrition.nutrients[1].amount} 
-          calories={m.calories ? m.calories : m.nutrition.nutrients[0].amount}/>)
+          calories={m.calories ? m.calories : m.nutrition.nutrients[0].amount}/> 
+
+            {/* give form each meals nutrient amounts so it can be added to db / state */}
+            <AddMealFromSearchForm addUserMeal={addUserMeal} title={m.title} 
+          carbs={m.carbs ? m.carbs : m.nutrition.nutrients[3].amount} 
+          protein={m.protein ? m.protein : m.nutrition.nutrients[10].amount} 
+          fats={m.fat ? m.fat : m.nutrition.nutrients[1].amount} 
+          calories={m.calories ? m.calories : m.nutrition.nutrients[0].amount}/> </>)
+
           : 'No Results Found'
         }
       </div>
