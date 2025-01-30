@@ -5,7 +5,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL || "";
 
 
 class SpoonacularApi {
-  static apiKey = ''
+  static apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY
   static baseUrl = 'https://api.spoonacular.com/recipes/'
 
   // turn an object into str 

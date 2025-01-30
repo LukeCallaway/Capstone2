@@ -51,5 +51,8 @@
     "transformIgnorePatterns": [
       "node_modules/(?!axios)/"
     ]
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.7"
   }
 }
