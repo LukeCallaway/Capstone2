@@ -28,6 +28,7 @@ console.log("---");
 
 module.exports = {
   SECRET_KEY,
+  CLIENT_PASSWORD,
   PORT,
   BCRYPT_WORK_FACTOR,
   getDatabaseUri,
