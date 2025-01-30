@@ -2,6 +2,7 @@
 
 const { Client } = require("pg");
 const { getDatabaseUri } = require("./config");
+const { CLIENT_PASSWORD } = require("./config");
 
 let db;
 
@@ -15,7 +16,7 @@ if (process.env.NODE_ENV === "production") {
 }else {
   db = new Client({
     database: 'capstone2',
-    password: ""
+    password: CLIENT_PASSWORD
   });
 }
 
