@@ -13,3 +13,4 @@ VALUES
 (1, 'pork chops', 600, 'monday', 'dinner'),
 (1, 'pasta', 400, 'monday', 'lunch'),
 (1, 'eggs', 200, 'sunday', 'breakfast');
+
